@@ -5,8 +5,6 @@
  * @MIT Licensed
  * @API
  */
-
-
 var Container = function(x) {
   this.__value = x;
 };

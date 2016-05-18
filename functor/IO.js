@@ -1,7 +1,7 @@
 var _ = require('ramda');
 
 var IO = function(f){
-	this.__value = f;
+	this.unsafePerformIO  = f;
 };
 
 IO.of = function(x){
@@ -11,7 +11,7 @@ IO.of = function(x){
 };
 
 IO.prototype.map = function(f){
-	return new IO(_.compose(f,this.__value));
+	return new IO(_.compose(f,this.unsafePerformIO ));
 };
 
 IO.prototype.join = function(){
