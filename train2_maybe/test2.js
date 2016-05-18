@@ -3,6 +3,27 @@ var Maybe = require('../functor/Maybe');
 var Left = require('../functor/Left');
 var Right = require('../functor/Right');
 
-console.log(Right.of("rain").map(function(str){ return "b"+str; }));
+var trace = function(state){
+	console.log('tace:',state);
+	return state;
+};
 
-console.log(Left.of(null).map(function(str){ return "b"+str; }));
+_.map = _.curry(function(f,ftor){
+	return ftor.map(f);
+});
+
+var safeProp = _.curry(function(x, obj) {
+  return new Maybe(obj[x]);
+});
+
+var safeHead = safeProp(0);
+
+var firstAddressStreet = _.compose(
+  _.map(_.map(safeProp('street'))), _.map(safeHead), safeProp('addresses')
+);
+
+var res = firstAddressStreet(
+  {addresses: [{street: {name: 'Mulburry', number: 8402}, postcode: "WC2N" }]}
+);
+
+console.log('result',res);
